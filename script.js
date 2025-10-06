@@ -1,5 +1,5 @@
 // Passwortschutz - WICHTIG: Ändere das Passwort hier!
-const FIXED_PASSWORD = "blablabla08"; // <-- HIER DEIN PASSWORT EINTRAGEN
+const FIXED_PASSWORD = "3112"; // <-- HIER DEIN PASSWORT EINTRAGEN
 
 function checkPassword() {
     const isAuthenticated = sessionStorage.getItem('bipolar_authenticated');

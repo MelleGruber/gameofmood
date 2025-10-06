@@ -239,6 +239,13 @@ function loadSavedMessages() {
 
 function displayMessages(section) {
     const messagesContainer = document.getElementById(`${section}-messages`);
+
+    // Wenn Container nicht existiert, einfach zurückkehren
+    if (!messagesContainer) {
+        console.log(`Messages container for ${section} not found, skipping...`);
+        return;
+    }
+
     const messages = getStoredMessages(section);
 
     if (messages.length === 0) {
@@ -393,8 +400,12 @@ function updateWarningSystem(section) {
     const totalCount = checkboxes.length;
     const percentage = (checkedCount / totalCount) * 100;
 
+    console.log('updateWarningSystem called:', section, 'checked:', checkedCount, 'total:', totalCount, 'percentage:', percentage);
+
     const statusElement = document.getElementById(`${section}-status`);
     const statusElementBottom = document.getElementById(`${section}-status-bottom`);
+
+    console.log('statusElement:', statusElement, 'statusElementBottom:', statusElementBottom);
 
     // Status zurücksetzen für beide Elemente
     [statusElement, statusElementBottom].forEach(element => {
@@ -414,16 +425,16 @@ function updateWarningSystem(section) {
         return;
     } else if (percentage < 30) {
         className = 'warning-status safe';
-        content = `${checkedCount} von ${totalCount} Frühwarnzeichen - Weiter beobachten (${Math.round(percentage)}%).`;
+        content = `${checkedCount} von ${totalCount} Frühwarnzeichen - Weiter beobachten (${Math.round(percentage)}%)`;
     } else if (percentage < 50) {
         className = 'warning-status warning';
-        content = `${checkedCount} von ${totalCount} Frühwarnzeichen - Gespräch zu Kontaktperson suchen (${Math.round(percentage)}%).`;
+        content = `${checkedCount} von ${totalCount} Frühwarnzeichen - Gespräch zu Kontaktperson suchen (${Math.round(percentage)}%)`;
     } else {
         className = 'warning-status danger';
         content = `
             <strong>🚨 ACHTUNG!</strong><br>
             ${checkedCount} von ${totalCount} Frühwarnzeichen - <strong>Gegenmaßnahmen einleiten!</strong> (${Math.round(percentage)}%)<br>
-            <a onclick="scrollToMeasures('${section}')" style="color: #721c24; text-decoration: underline; cursor: pointer; font-weight: bold;">Zu den Maßnahmen</a> | 
+            <a onclick="scrollToMeasures('${section}')" style="color: #721c24; text-decoration: underline; cursor: pointer; font-weight: bold;">Zu den Maßnahmen</a> |
             <a onclick="scrollToReasons('${section}')" style="color: #721c24; text-decoration: underline; cursor: pointer;">Gründe nachlesen</a>
         `;
     }

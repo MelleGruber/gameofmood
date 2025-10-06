@@ -3,64 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bipolare Störung - Selbstbeobachtung</title>
+    <title>Game of Moods</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Bipolare Störung - Selbstbeobachtung</h1>
-        <p>Ein Tool zur Früherkennung und Selbsthilfe</p>
-    </header>
+    <!-- Passwortschutz Overlay -->
+    <div id="password-overlay" class="password-overlay">
+        <div class="password-container">
+            <!-- Login -->
+            <div id="password-login" class="password-form">
+                <h2>Anmelden</h2>
+                <p>Gib dein Passwort ein, um fortzufahren.</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-password">Passwort:</label>
+                        <input type="password" id="login-password" required autocomplete="current-password">
+                    </div>
+                    <div id="login-error" class="error-message"></div>
+                    <button type="submit" class="password-btn">Anmelden</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <nav>
-        <button class="nav-btn active" data-section="manie">Manie</button>
-        <button class="nav-btn" data-section="depression">Depression</button>
-    </nav>
+    <!-- Hauptinhalt -->
+    <div id="main-content" style="display: none;">
+        <header>
+            <h1>Game of Moods</h1>
+            <p>Winter is coming… and so is the next mood swing.</p>
+        </header>
 
-    <main>
+        <nav>
+            <button class="nav-btn active" data-section="manie">Manie</button>
+            <button class="nav-btn" data-section="depression">Depression</button>
+        </nav>
+
+        <!-- Schnellnavigation -->
+        <div class="quick-nav" id="quick-nav">
+            <button class="quick-nav-toggle" onclick="toggleQuickNav()">≡ Schnellnavigation</button>
+            <div class="quick-nav-content" id="quick-nav-content">
+                <div class="quick-nav-section" data-target="manie">
+                    <h4>Manie</h4>
+                    <button onclick="scrollToSection('manie', 'early-warning')">🚨 Frühwarnzeichen</button>
+                    <button onclick="scrollToSection('manie', 'acute-measures')">⚡ Akutmaßnahmen</button>
+                    <button onclick="scrollToSection('manie', 'reasons')">📚 Gründe</button>
+                    <button onclick="scrollToSection('manie', 'prevention')">🛡️ Prävention</button>
+                    <button onclick="scrollToSection('manie', 'contacts')">📞 Kontakte</button>
+                    <button onclick="scrollToSection('manie', 'message')">💬 Nachricht</button>
+                </div>
+                <div class="quick-nav-section" data-target="depression">
+                    <h4>Depression</h4>
+                    <button onclick="scrollToSection('depression', 'early-warning')">🚨 Frühwarnzeichen</button>
+                    <button onclick="scrollToSection('depression', 'reasons')">📚 Gründe</button>
+                    <button onclick="scrollToSection('depression', 'measures')">⚡ Maßnahmen</button>
+                    <button onclick="scrollToSection('depression', 'message')">💬 Nachricht</button>
+                </div>
+            </div>
+        </div>
+
+        <main>
         <!-- Manie Sektion -->
         <section id="manie" class="content-section active">
             <h2>Manie</h2>
 
-            <div class="subsection">
-                <h3>🚨 Frühwarnzeichen</h3>
+            <div class="subsection" id="manie-early-warning">
+                <h3>Frühwarnzeichen</h3>
                 <div class="content-box">
-                    <p>[Platzhalter für Frühwarnzeichen der Manie - hier werden später spezifische Symptome eingefügt]</p>
-                </div>
-            </div>
-
-            <div class="subsection">
-                <h3>⚠️ Warum es wichtig ist JETZT gegenzusteuern</h3>
-                <div class="content-box">
-                    <p>[Platzhalter für Gründe warum schnelles Handeln bei Manie wichtig ist]</p>
-                </div>
-            </div>
-
-            <div class="subsection">
-                <h3>🛠️ Maßnahmenkatalog</h3>
-                <div class="content-box">
-                    <p>[Platzhalter für konkrete Maßnahmen bei Manie-Frühwarnzeichen]</p>
-                </div>
-            </div>
-
-            <div class="subsection">
-                <h3>💌 Nachrichten von mir an mich</h3>
-                <div class="content-box">
-                    <div class="upload-section">
-                        <h4>Neue Nachricht hinzufügen:</h4>
-                        <div class="upload-buttons">
-                            <button class="upload-btn" data-type="text">Text</button>
-                            <button class="upload-btn" data-type="audio">Audio</button>
-                            <button class="upload-btn" data-type="image">Bild</button>
-                            <button class="upload-btn" data-type="video">Video</button>
+                    <div class="warning-system" id="manie-warning">
+                        <div class="warning-status" id="manie-status"></div>
+                    </div>
+                    <div class="checkbox-list" id="manie-symptoms">
+                        <h4>Schlaf</h4>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-1" data-section="manie">
+                            <label for="manie-1">Schlaf < 5h täglich an >3 aufeinanderfolgenden Tagen (ohne Müdigkeit)</label>
                         </div>
-                        <div class="upload-area" id="manie-upload">
-                            <!-- Upload-Bereich für Medien -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-2" data-section="manie">
+                            <label for="manie-2">Einschlafprobleme durch Tätigkeitsdrang an >3 aufeinanderfolgenden Tagen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-3" data-section="manie">
+                            <label for="manie-3">Nächtliches Aufwachen mit Tätigkeitsdrang an >3 aufeinanderfolgenden Tagen</label>
+                        </div>
+
+                        <h4>Energie / Aktivitäten</h4>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-4" data-section="manie">
+                            <label for="manie-4">Schrittzahl/Training >50-100% über Normal an 3 aufeinanderfolgenden Tagen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-5" data-section="manie">
+                            <label for="manie-5">≥3 neue Projekte/Ideen innerhalb 48h</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-6" data-section="manie">
+                            <label for="manie-6">Intensive Umräum-/Umgestaltungsaktionen innerhalb 48h</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-7" data-section="manie">
+                            <label for="manie-7">Hyperfokus - nicht unterbrechbar, hohe Anspannung bei Störung</label>
+                        </div>
+
+                        <h4>Kognitiv & Emotional</h4>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-8" data-section="manie">
+                            <label for="manie-8">Stimmung >8/10 an 3 aufeinanderfolgenden Tagen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-9" data-section="manie">
+                            <label for="manie-9">Rasende Gedanken mit häufigen Gedankensprüngen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-10" data-section="manie">
+                            <label for="manie-10">Stark erhöhtes Redebedürfnis</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-11" data-section="manie">
+                            <label for="manie-11">Deutlich erhöhte Sprachgeschwindigkeit</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-12" data-section="manie">
+                            <label for="manie-12">Größenideen/übermäßiges Selbstvertrauen an >2 aufeinanderfolgenden Tagen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-13" data-section="manie">
+                            <label for="manie-13">Intensive positive Gefühle an >2 aufeinanderfolgenden Tagen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-14" data-section="manie">
+                            <label for="manie-14">"High"-Gefühl/Euphorie/freudige Aufregung an >2 aufeinanderfolgenden Tagen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-15" data-section="manie">
+                            <label for="manie-15">Distanzlosigkeit</label>
+                        </div>
+
+                        <h4>Impulsivität</h4>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-16" data-section="manie">
+                            <label for="manie-16">Ungefilterte, unpassende Gesprächsinhalte</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-17" data-section="manie">
+                            <label for="manie-17">Häufiges Unterbrechen von Gesprächspartnern</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manie-18" data-section="manie">
+                            <label for="manie-18">Unüberlegte Ausgaben >150€</label>
                         </div>
                     </div>
-                    <div class="messages-display" id="manie-messages">
-                        <p>[Hier werden deine persönlichen Nachrichten angezeigt]</p>
+                    <div class="warning-system" id="manie-warning-bottom">
+                        <div class="warning-status" id="manie-status-bottom"></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="subsection" id="manie-acute-measures">
+                <h3>Maßnahmen im Akutfall</h3>
+                <div class="content-box">
+                    <h4>A. Schlafstabilisierung (Höchste Priorität)</h4>
+                    <p>Schlaf ist der wichtigste Stabilisator bei Manie. Schlafmangel verstärkt manische Symptome und kann die Episode verschlimmern.</p>
+
+                    <p><strong>Schlafhygiene streng einhalten:</strong></p>
+                    <ul>
+                        <li>Feste Zubettgeh- und Aufstehzeiten (auch am Wochenende)</li>
+                        <li>Kein Koffein ab dem Nachmittag</li>
+                        <li>Bildschirme 2 Std. vor dem Schlaf meiden (Blaufilter aktivieren)</li>
+                        <li>Entspannungsübungen anwenden</li>
+                        <li>Schlafumgebung optimieren (dunkel, kühl, ruhig)</li>
+                    </ul>
+
+                    <p><strong>Bei Schlaflosigkeit:</strong></p>
+                    <ul>
+                        <li>Bedarfsmedikation wenn Schlaf < 5 Std./Nacht über 3 Tage</li>
+                    </ul>
+
+                    <br>
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid #dee2e6;">
+                    <br>
+
+                    <h4>B. Stressreduktion & Entspannung</h4>
+                    <p>Reizüberflutung und Überstimulation fördern manische Symptome. Bewusste Entspannung hilft, das Aktivitätsniveau zu senken.</p>
+
+                    <p><strong>Achtsamkeit & Grounding-Techniken:</strong></p>
+                    <ul>
+                        <li>5-4-3-2-1-Methode anwenden</li>
+                        <li>Progressive Muskelentspannung (PMR)</li>
+                        <li>Meditation / Yoga</li>
+                        <li>Achtsamkeitsübungen</li>
+                    </ul>
+
+                    <p><strong>Bewegung dosiert einsetzen:</strong></p>
+                    <ul>
+                        <li>Moderate Ausdauer- oder Kraftsporteinheiten</li>
+                        <li>Bewegung an der frischen Luft</li>
+                    </ul>
+
+                    <p><strong>Reizüberflutung vermeiden:</strong></p>
+                    <ul>
+                        <li>Hyperfokus zeitlich begrenzen oder unterbrechen <em style="color: #dc3545;">(therapeutisch abklären!)</em></li>
+                        <li>Medienkonsum reduzieren</li>
+                        <li>Soziale Aktivitäten einschränken</li>
+                        <li>Multitasking vermeiden</li>
+                        <li>Krankmeldung prüfen</li>
+                    </ul>
+
+                    <br>
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid #dee2e6;">
+                    <br>
+
+                    <h4>C. Feste Tagesstruktur</h4>
+                    <p>Eine stabile Routine gibt dem Tag Halt und verhindert übermäßige Aktivität sowie impulsive Handlungen.</p>
+                    <ul>
+                        <li>Regelmäßige Schlafenszeiten beibehalten</li>
+                        <li>Maximal 1 Termin/Aufgabe pro Tag</li>
+                        <li>Regelmäßige Mahlzeiten einhalten</li>
+                        <li>Ausreichend Flüssigkeit zuführen</li>
+                        <li>Koffeinverzicht</li>
+                        <li>Regelmäßige Medikamenteneinnahme sicherstellen</li>
+                    </ul>
+
+                    <br>
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid #dee2e6;">
+                    <br>
+
+                    <h4>D. Impulskontrolle und Risikomanagement</h4>
+                    <p>Manische Episoden gehen oft mit impulsiven Entscheidungen einher. Strukturierte Kontrolle schützt vor langfristigen Konsequenzen.</p>
+                    <ul>
+                        <li>Finanzen sichern <em style="color: #dc3545;">(Umsetzung noch zu planen)</em></li>
+                        <li>Soziale Kontakte bewusst dosieren, vor Äußerungen reflektieren</li>
+                        <li>Wichtige Entscheidungen wenn möglich aufschieben</li>
+                        <li>Überstunden vermeiden, nicht einspringen, ggf. Krankmeldung</li>
+                    </ul>
+
+                    <br>
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid #dee2e6;">
+                    <br>
+
+                    <h4>E. Kontaktaufnahme zu Vertrauenspersonen/Behandlerteam</h4>
+                    <p>Frühzeitige Einbindung des Behandlungsteams und enger Bezugspersonen ermöglicht schnelle Intervention und Unterstützung.</p>
+                    <p><em style="color: #dc3545;">(Wie genau die Kontaktpersonen helfen können, noch zu definieren)</em></p>
+                    <ul>
+                        <li>Dr. Ito informieren, falls nicht erreichbar: Hausarzt kontaktieren</li>
+                        <li>Frau Dr. Rehbaum benachrichtigen</li>
+                        <li>Gespräch mit Sabrina führen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection" id="manie-reasons">
+                <h3>Warum es wichtig ist JETZT gegenzusteuern</h3>
+                <div class="content-box">
+                    <ul>
+                        <li><strong>Gefahr schwerer depressiver Episoden:</strong> Nach manischen Phasen folgt oft ein schwerer depressiver Einbruch</li>
+                        <li><strong>Gefahr einer Vollmanie:</strong> Risiko einer Hypomanie mit möglicher Krankenhauseinweisung</li>
+                        <li><strong>Körperliche Erschöpfung:</strong> Immunschwäche und gesundheitliche Folgen durch Schlafmangel & Stress</li>
+                        <li><strong>Soziale Konflikte:</strong> Probleme in zwischenmenschlichen Beziehungen und im sozialen Umfeld</li>
+                        <li><strong>Finanzielle Risiken:</strong> Impulsive Ausgaben und unüberlegte finanzielle Entscheidungen</li>
+                        <li><strong>Beziehungsgefährdung:</strong> Belastung von Partnerschaften, Familie und Freundschaften</li>
+                        <li><strong>Berufliche Gefährdung:</strong> Risiko für die Arbeitsfähigkeit und berufliche Stabilität</li>
+                        <li><strong>Kindling-Effekt:</strong> Verkürzung der Zyklen zwischen Episoden und Zunahme der Häufigkeit</li>
+                        <li><strong>Therapeutische Wirksamkeit:</strong> Je früher gegengesteuert wird, desto besser wirken Interventionen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="subsection" id="manie-prevention">
+                <h3>Präventive Maßnahmen</h3>
+                <div class="content-box">
+                    <div class="checkbox-list preventive-measures">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-1" data-storage="preventive-manie">
+                            <label for="preventive-1">
+                                <a href="#manie-contacts" onclick="scrollToKontaktpersonen()" style="color: #495057; text-decoration: underline;">Kontaktpersonen</a> über Symptome und Maßnahmen informieren, um aktive Ansprache bei auffälligem Verhalten bitten
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-2" data-storage="preventive-manie">
+                            <label for="preventive-2">Mit Stationsleitung besprechen: nur noch 2 Nachtdienste pro Monat mit mindestens 2 Tagen ausgleichsfrei</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-3" data-storage="preventive-manie">
+                            <label for="preventive-3">Mindestens 7h Schlaf einplanen und regelmäßigen Tag-Nacht-Rhythmus achten</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-4" data-storage="preventive-manie">
+                            <label for="preventive-4">Ggf. medikamentöse Schlafunterstützung besprechen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-5" data-storage="preventive-manie">
+                            <label for="preventive-5">Notfallplan erstellen und therapeutisch besprechen</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-6" data-storage="preventive-manie">
+                            <label for="preventive-6">Nachbesprechung mit Psychiater bzgl. Bedarfsmedikation und ggf. Festmedikation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preventive-7" data-storage="preventive-manie">
+                            <label for="preventive-7">Mo & Do Überprüfung Frühwarnsignale</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection" id="manie-contacts">
+                <h3>Kontaktpersonen</h3>
+                <div class="content-box">
+                    <p>Kontaktpersonen über deine Situation aufklären, Frühwarnsignale sowie Gegenmaßnahmen besprechen und um aktive Ansprache bei auffälligem Verhalten bitten.</p>
+                    
+
+                    <h4>Kontakte informiert</h4>
+                    <div class="checkbox-list contacts">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contact-1" data-storage="contacts">
+                            <label for="contact-1"><strong>Therapeutisch:</strong> Frau Dr. Rehbaum</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contact-2" data-storage="contacts">
+                            <label for="contact-2"><strong>Psychiatrisch:</strong> Fr. Dr. Ito <em style="color: #dc3545;">(Erreichbarkeit in akuter Situation klären)</em></label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contact-5" data-storage="contacts">
+                            <label for="contact-5"><strong>Hausärztlich:</strong> Praxis Bachhuber</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contact-3" data-storage="contacts">
+                            <label for="contact-3"><strong>Lebensgefährtin:</strong> Sabrina</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contact-4" data-storage="contacts">
+                            <label for="contact-4"><strong>Freundeskreis:</strong> Evelyn</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection" id="manie-message">
+                <h3>Persönliche Nachricht an mich</h3>
+                <div class="content-box">
+                    <p><strong>Liebe Melle,</strong></p>
+
+                    <p>Dir geht es gerade richtig gut. Wahrscheinlich kommst du aus einer depressiven Phase und spürst endlich wieder etwas – Freude, Antrieb, Energie, Ideen. Du genießt dieses Gefühl, und das ist vollkommen verständlich.</p>
+
+                    <p>Du glaubst fest daran, dass diesmal alles anders ist: dass du die Kontrolle hast, dich selbst aus der Depression herausgeholt hast und dich jetzt aus eigener Kraft mit dieser guten Phase belohnst. Du fühlst dich kreativ, frei, stark und selbstbewusst. Du sprudelst vor Energie, bist kaum müde, kannst dich stundenlang für Dinge begeistern und glaubst, dass dir nichts passieren kann. Dass du diesmal nicht abstürzen wirst. Dass diese Phase dein wahres Ich ist.</p>
+
+                    <p>Ich wünsche dir von Herzen, dass das stimmen könnte. Aber wenn du ehrlich bist, weißt du, dass es nicht so ist. Diese Phase fühlt sich unglaublich gut an – aber sie kostet viel Kraft. Und sie kann dich noch viel mehr kosten. Mit jeder Episode steigt die Gefahr, dass weitere folgen. Die Zeiten der Stabilität werden kürzer, und das Risiko, in eine Manie zu rutschen, ist hoch.</p>
+
+                    <p>Im schlimmsten Fall könnte das bedeuten, dass du stationär behandelt werden musst – vielleicht sogar gegen deinen Willen. Und du weißt genau, wie es auf den akuten Stationen aussieht. Das willst du auf keinen Fall.</p>
+
+                    <p>Auch die Gefahr für einen depressiven Absturz ist groß. Im Moment erscheint dir dieser Gedanke weit weg, weil es dir so gut geht, aber du weißt aus Erfahrung: Auf jede hypomane Phase folgte bisher eine Depression. Immer. Und das willst du diesmal verhindern.</p>
+
+                    <p>Du kennst diese Antriebslosigkeit, Freudlosigkeit, den Verlust von Interessen, die Gefühlslosigkeit. Du weißt, wie schwer das auszuhalten ist. Diese Phase jetzt ist es nicht wert, das alles wieder zu riskieren. So gut sie sich auch anfühlt – sie ist es nicht wert.</p>
+
+                    <p>Und wenn du ehrlich hinsiehst, ist gerade auch nicht alles so leicht und frei, wie es scheint. Ja, du hast viele Ideen, deine Gedanken rasen, du bist kreativ – aber bist du wirklich frei? Oder vielmehr getrieben von deinen Gedanken? Du merkst, dass du dich in Themen verrennst, soziale Kontakte vernachlässigst und gedanklich oft weit weg bist.</p>
+
+                    <p>Besonders Sabrina gegenüber. Sie ist ein wunderbarer Mensch und ein wichtiger Anker in deinem Leben. Du willst sie nicht verlieren, und du willst diese Beziehung nicht gefährden.</p>
+
+                    <p>In dieser Phase neigst du auch zu impulsivem Verhalten – bei Ausgaben, Nachrichten, Ideen. Du weißt, dass du damit Dinge kaputt machen kannst.</p>
+
+                    <p>Auch der Schlafmangel ist ein Problem. Noch spürst du ihn kaum, aber bald wird der Punkt kommen, an dem du einbrichst – wo du dich fühlst, als hätte dich ein LKW überfahren, ohne Energie, ohne Antrieb, unfähig, einfache Aufgaben zu erledigen.</p>
+
+                    <p><strong>Deshalb meine eindringlichste, liebevollste Bitte an dich:<br>
+                    Zieh jetzt die Bremse. Es ist Zeit, gegenzusteuern.</strong></p>
+
+                    <br>
+                    <hr style="margin: 30px 0; border: none; border-top: 2px solid #ffc107;">
+                    <br>
+
+                    <h4>💛 Was du jetzt für dich tun kannst (Dein Notfallplan)</h4>
+
+                    <p><strong>Nimm Kontakt zu deinen Vertrauenspersonen auf:</strong> Lass dir helfen. Sie wollen nur dein Bestes.</p>
+                    <ul>
+                        <li>Wenn du noch in Therapie bist, schreib Frau Rehbaum eine E-Mail.</li>
+                        <li>Informiere deine Psychiaterin. Falls sie nicht erreichbar ist, kontaktiere deinen Hausarzt. Höre auf das, was sie dir raten!</li>
+                        <li>Sprich offen mit Sabrina und vielleicht auch mit Evelyn.</li>
+                    </ul>
+
+                    <p><strong>Strukturiere deinen Tag:</strong></p>
+                    <ul>
+                        <li>Achte auf einen regelmäßigen Tag-Nacht-Rhythmus. Geh zu einer festen Zeit ins Bett, auch wenn du nicht müde bist.</li>
+                        <li>Sorge für ausreichend Schlaf (mindestens 7–8 Stunden). Nimm bei Bedarf Medikation ein</li>
+                        <li>Vermeide Reizüberflutung (laute Musik, Menschenmengen, zu viele Projekte gleichzeitig).</li>
+                    </ul>
+
+                    <p><strong>Schütze dich selbst:</strong></p>
+                    <ul>
+                        <li>Gib bitte kein Geld für die Ideen aus, die du gerade für brillant hältst. Lege deine Kreditkarte weg. Vermeide Onlineshopping. Warte mindestens eine Woche, bevor du etwas kaufst.</li>
+                        <li>Reduziere soziale Kontakte für ein paar Tage oder überlege zumindest dreimal, bevor du losredest.</li>
+                        <li>Überlege dir gut, ob du in diesem Zustand arbeiten kannst. Bist du in der Lage, deine Patienten ordentlich zu betreuen? Vielleicht ist eine Krankschreibung für ein paar Tage die sicherere Wahl – für dich und für andere.</li>
+                    </ul>
+
+                    <br>
+                    <hr style="margin: 30px 0; border: none; border-top: 2px solid #ffc107;">
+                    <br>
+
+                    <p>Ich weiß, es ist schwer, dieses Gefühl loszulassen. Du genießt es, endlich wieder lebendig zu sein. Aber das Beste, was du jetzt für dich tun kannst, ist, bewusst gegenzusteuern.</p>
+
+                    <p>Wenn du das tust, kann diese Episode hoffentlich ohne großen Schaden vorbeigehen.</p>
+
+                    <p>Du wirst dich wieder stabilisieren. Und du wirst weiterhin kreativ und lebendig sein können – nur ruhiger, sicherer und ausgeglichener.</p>
+
+                    <p>Du hast auch im normalen Zustand großartige, kreative Momente. Du kannst viel erreichen, ohne dich zu verlieren. Dieses verlockende High brauchst du nicht.</p>
+
+                    <p><strong>Du bist stark. Du bist mutig. Und du darfst dich selbst schützen.</strong></p>
+
+                    <p><strong>Ich glaube an dich. 💛</strong></p>
                 </div>
             </div>
         </section>
@@ -69,49 +417,75 @@
         <section id="depression" class="content-section">
             <h2>Depression</h2>
 
-            <div class="subsection">
-                <h3>🚨 Frühwarnzeichen</h3>
+            <div class="subsection" id="depression-early-warning">
+                <h3>Frühwarnzeichen</h3>
                 <div class="content-box">
-                    <p>[Platzhalter für Frühwarnzeichen der Depression - hier werden später spezifische Symptome eingefügt]</p>
+                    <div class="warning-system" id="depression-warning">
+                        <div class="warning-status" id="depression-status"></div>
+                    </div>
+                    <div class="checkbox-list" id="depression-symptoms">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-1" data-section="depression">
+                            <label for="depression-1">Vermehrtes Schlafbedürfnis oder Schlaflosigkeit</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-2" data-section="depression">
+                            <label for="depression-2">Antriebslosigkeit und erhöhte Müdigkeit</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-3" data-section="depression">
+                            <label for="depression-3">Verlust von Interesse an Aktivitäten</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-4" data-section="depression">
+                            <label for="depression-4">Negative Gedanken oder Selbstzweifel</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-5" data-section="depression">
+                            <label for="depression-5">Sozialer Rückzug von Familie und Freunden</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-6" data-section="depression">
+                            <label for="depression-6">Appetitlosigkeit oder Heißhunger</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-7" data-section="depression">
+                            <label for="depression-7">Konzentrationsschwierigkeiten</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="depression-8" data-section="depression">
+                            <label for="depression-8">Gefühle von Hoffnungslosigkeit</label>
+                        </div>
+                    </div>
+                    <div class="warning-system" id="depression-warning-bottom">
+                        <div class="warning-status" id="depression-status-bottom"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="subsection">
-                <h3>⚠️ Warum es wichtig ist JETZT gegenzusteuern</h3>
+            <div class="subsection" id="depression-reasons">
+                <h3>Warum es wichtig ist JETZT gegenzusteuern</h3>
                 <div class="content-box">
                     <p>[Platzhalter für Gründe warum schnelles Handeln bei Depression wichtig ist]</p>
                 </div>
             </div>
 
-            <div class="subsection">
-                <h3>🛠️ Maßnahmenkatalog</h3>
+            <div class="subsection" id="depression-measures">
+                <h3>Maßnahmenkatalog</h3>
                 <div class="content-box">
                     <p>[Platzhalter für konkrete Maßnahmen bei Depressions-Frühwarnzeichen]</p>
                 </div>
             </div>
 
-            <div class="subsection">
-                <h3>💌 Nachrichten von mir an mich</h3>
+            <div class="subsection" id="depression-message">
+                <h3>Persönliche Nachricht an mich</h3>
                 <div class="content-box">
-                    <div class="upload-section">
-                        <h4>Neue Nachricht hinzufügen:</h4>
-                        <div class="upload-buttons">
-                            <button class="upload-btn" data-type="text">Text</button>
-                            <button class="upload-btn" data-type="audio">Audio</button>
-                            <button class="upload-btn" data-type="image">Bild</button>
-                            <button class="upload-btn" data-type="video">Video</button>
-                        </div>
-                        <div class="upload-area" id="depression-upload">
-                            <!-- Upload-Bereich für Medien -->
-                        </div>
-                    </div>
-                    <div class="messages-display" id="depression-messages">
-                        <p>[Hier werden deine persönlichen Nachrichten angezeigt]</p>
-                    </div>
+                    <p>[Hier wird deine persönliche Videobotschaft eingebettet]</p>
                 </div>
             </div>
         </section>
-    </main>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
